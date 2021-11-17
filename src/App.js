@@ -4,13 +4,15 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Login from './pages/login/Login';
 import Project from './pages/project/Project';
 import Signup from './pages/signup/Signup';
+import Navbar from './components/Navbar';
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <div className="container">
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className="container">
+          <Navbar />
           <Switch>
             <Route exact path="/">
               <Dashboard />
@@ -28,8 +30,8 @@ function App() {
               <Signup />
             </Route>
           </Switch>
-        </BrowserRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     </div>
   );
 }
