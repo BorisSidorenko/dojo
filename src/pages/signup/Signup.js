@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSignup } from '../../hooks/useSignup';
 import './Signup.css';
 
 export default function Signup() {
@@ -6,9 +7,39 @@ export default function Signup() {
     const [password, setPassword] = useState('');
     const [displayName, setDisplayName] = useState('');
     const [thumbnail, setThumbnail] = useState(null);
+    const [thumbnailError, setThumbnailError] = useState(null);
+    const { error, isPending, signup } = useSignup();
+
+    const handleFileChange = (e) => {
+        setThumbnail(null);
+        let [selected] = e.target.files;        
+
+        if (!selected) {
+            setThumbnailError('Please select a file');
+            return;
+        }
+
+        if (!selected.type.includes('image')) {
+            setThumbnailError('Selected file must be an image');
+            return;
+        }
+
+        if (selected.size > 100000) {
+            setThumbnailError('Image file size most be less than 100kb');
+            return;
+        }
+
+        setThumbnailError(null);
+        setThumbnail(selected);        
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        signup(email, password, displayName, thumbnail);
+    }
 
     return (
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
             <h2>Sign up</h2>
             <label>
                 <span>email:</span>
@@ -41,10 +72,14 @@ export default function Signup() {
                 <span>profile thumbnail:</span>
                 <input 
                     type="file" 
-                    required                                        
+                    required       
+                    onChange={handleFileChange}                                 
                 />
+                {thumbnailError && <div className="error">{thumbnailError}</div>}
             </label>
-            <button className="btn">Sign up</button>
+            {!isPending && <button className="btn">Sign up</button>}
+            {isPending && <button className="btn" disabled>Loading...</button>}
+            {error && <div className="error">{error}</div>}
         </form>
     )
 }
