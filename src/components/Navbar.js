@@ -25,14 +25,12 @@ export default function Navbar() {
                         </li>
                     </>
                 )}
-                {user && (
-                    <>
-                        <li>
-                            {!isPending && <button className="btn" onClick={logout}>Logout</button>}
-                            {isPending && <button className="btn" disabled>Loging out...</button>}
-                            {error && <button className="error">{error}</button>}
-                        </li>
-                    </>
+                {user && (                    
+                    <li>
+                        {!isPending && <button className="btn" onClick={logout}>Logout</button>}
+                        {isPending && <button className="btn" disabled>Loging out...</button>}
+                        {error && <button className="error">{error}</button>}
+                    </li>                   
                 )}                
             </ul>
         </div>
